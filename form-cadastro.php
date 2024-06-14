@@ -9,7 +9,7 @@
 
 <body>
     <form action="cadastrar.php" method="post">
-        <label>Nome: <input type="text" name="nome"></label><br>
+        <label>Nome: <input type="name" name="nome"></label><br>
         <label>Email: <input type="email" name="email"></label><br>
         <label>Senha: <input type="password" name="senha"></label><br>
         <input type="submit" value="cadastrar-se">
