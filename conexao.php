@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Faz uma conexão com o banco de dados Mysql,
  * na base de dados recuperar-senha.
@@ -7,15 +8,25 @@
  * mata a execução e exibe o erro.
  * 
  */
-function conectar(){
+function conectar()
+{
     $conexao = mysqli_connect("localhost", "root", "", "recuperar-senha");
     if ($conexao === false) {
-        echo "Erro ao conectar à base de dados. Nº do erro: " . 
-        mysqli_connect_errno() . ". ".
-        mysqli_connect_errno();
+        echo "Erro ao conectar à base de dados. Nº do erro: " .
+            mysqli_connect_errno() . ". " .
+            mysqli_connect_errno();
         die();
     }
     return $conexao;
 }
-
+function executarSQL($conexao, $sql)
+{
+    $resultado = mysqli_query($conexao, $sql);
+    if ($resultado == false) {
+        echo "Erro ao executar o comando SQL." .
+            mysqli_errno($conexao) . ": " . mysqli_error($conexao);
+            die();
+    }
+    return $resultado;
+}
 ?>
