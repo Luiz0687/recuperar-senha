@@ -6,7 +6,7 @@ $conexao = conectar();
 $nome = $_POST['nome'];
 $email = $_POST['email'];
 $senha = $_POST['senha'];
-
+ //jjjj
 // TODO armazenar a senha de modo seguro
 $sql = "INSERT INTO usuario (nome, email, senha) VALUES 
         ('$nome', '$email', '$senha')";
