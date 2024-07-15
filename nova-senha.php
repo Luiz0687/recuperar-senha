@@ -7,9 +7,9 @@ $token = $_GET['token'];
 require_once "conexao.php";
 $conexao = conectar();
 $sql = "SELECT * FROM `recuperar-senha` WHERE email='$email' AND token='$token'";
-$resultado = executarSQL($conexao,$sql);
+$resultado = executarSQL($conexao, $sql);
 $recuperar = mysqli_fetch_assoc($resultado);
-if ($recuperar == null){
+if ($recuperar == null) {
     echo "Email ou token incorreto. Tente fazer um novo pedido de recuperação de senha";
     die();
 } else {
@@ -19,10 +19,38 @@ if ($recuperar == null){
     $agora = new DateTime('now');
     $data_criacao = DateTime::createFromFormat('Y-m-d H:i:s', $recuperar['data_criacao']);
     $umDia = DateInterval::createFromDateString('1 day');
-    $dataExpiracao = date_add($data_criacao,$umDia);
-    
-    if ($agora < $dataExpiracao){
-        echo "Funcionou!";
+    $dataExpiracao = date_add($data_criacao, $umDia);
+
+    if ($agora > $dataExpiracao) {
+        echo "Essa solicitação de recuperação de senha expirou ! Faça um novo pedido";
+        die();
+    }
+    if ($recuperar['usado'] == 1) {
+        echo "Esse pedido de recuperação de senha já foi utilizado anteriormente ! 
+        Para recuperar a senha faça´um novo pedido de recuperação de senha.";
+        die();
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="pt_br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova senha</title>
+</head>
+
+<body>
+    <form action="salvar-nova-senha.php" method="post">
+        <input type="hidden" name="email" value="<?= $email ?>">
+        <input type="hidden" name="token" value="<?= $token ?>">
+        Email : <?= $email ?><br>
+        <label>Senha : <input type="password" name="senha"> </label><br>
+        <label>Repita a senha : <input type="password" name="repetirSenha"> </label><br>
+        <input type="submit" value="Salvar nova senha" >
+    </form>
+
+            </body>
+
+</html>
